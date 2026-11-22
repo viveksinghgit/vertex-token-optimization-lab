@@ -1,0 +1,46 @@
+INFRASTRUCTURE PROVISIONING AND TERRAFORM POLICY
+Document ID: PLAT-IAC-005
+Version: 1.0
+Owner: Cloud Platform Engineering
+Effective date: 1 January 2026
+Classification: Internal
+
+1. Purpose and scope
+This policy defines how cloud infrastructure is requested, provisioned, changed and decommissioned using Infrastructure as Code (IaC). It applies to Azure subscriptions, resource groups, networks, compute, databases, Kubernetes platforms, shared services and supporting automation.
+
+2. Approved provisioning method
+Terraform or another platform-approved IaC tool must be used for repeatable production infrastructure. Manual portal changes are limited to approved break-glass or incident scenarios and must be reconciled into source control promptly.
+Terraform configurations must be stored in an approved version-control repository. Changes must be reviewed through pull requests and validated with formatting, static analysis, policy checks and a plan review before apply. Production applies must use an approved CI/CD identity and controlled deployment workflow.
+
+3. State management
+Terraform state must be stored in an approved remote backend with encryption, access control, versioning and recovery protections appropriate to the environment. Local state files must not be committed to source control or shared through email or chat. State access must be restricted to the automation identity and authorized platform maintainers.
+State locking must be enabled where supported. State backups and recovery procedures must be documented. Secrets must not be placed in state unless the provider requires it; where unavoidable, state access must be treated as access to those secrets.
+
+4. Naming and tagging
+Resources must follow the organization’s naming convention, including workload or application, environment, region and resource type where practical. Names must be stable and avoid personal information.
+All supported resources must include these tags:
+- application: registered application or service identifier
+- environment: dev, test, staging or prod
+- owner: accountable team or group
+- cost_center: approved finance cost-center code
+- managed_by: terraform or the approved provisioning tool
+- data_classification: public, internal, confidential or restricted
+- expiry_date: required for temporary resources, using YYYY-MM-DD
+Tag values must be controlled and consistently applied. Production resources must not use generic owner or cost-center values.
+
+5. Security and network controls
+Infrastructure modules must use approved secure defaults. Public endpoints must be justified and approved. Administrative access must use approved identity-aware paths. Secrets must be sourced from an approved secret manager rather than hardcoded in Terraform variables or module files.
+Network rules must be narrowly scoped. Encryption, diagnostics, logging and backup settings must be enabled according to the relevant service standards. Policy-as-code checks should prevent non-compliant deployments before they reach production.
+
+6. Module and version management
+Reusable modules must have documented inputs, outputs, examples and ownership. Provider and module versions must be constrained and reviewed. Changes to shared modules require testing and release notes. Teams should prefer approved internal modules for common network, identity, monitoring and security patterns.
+Modules must not silently create public access, broad role assignments or untagged resources.
+
+7. Cost and lifecycle management
+Architecture reviews must consider expected consumption, availability requirements, licensing and data transfer costs. Resources must be right-sized and monitored. Temporary environments must have an expiry date and an automated cleanup process where safe. Decommissioning must include data-retention checks, dependency validation and approval from the resource owner.
+
+8. Responsibilities and exceptions
+Application teams own workload requirements and repository changes. Platform engineering maintains shared modules, pipelines, policy checks and remote state. Finance defines cost-center metadata. Security reviews exceptions to security controls. Exceptions require a named owner, business justification, compensating controls and expiry date.
+
+9. Quick reference
+Use reviewed IaC, remote protected state, approved modules, mandatory tags, secure defaults, policy checks and controlled CI/CD applies. Never commit state files or hardcode credentials.

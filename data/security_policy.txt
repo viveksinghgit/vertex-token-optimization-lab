@@ -1,0 +1,38 @@
+CLOUD SECURITY, ENCRYPTION AND KEY MANAGEMENT POLICY
+Document ID: SEC-CLD-003
+Version: 1.0
+Owner: Information Security
+Effective date: 1 January 2026
+Classification: Internal
+
+1. Purpose and scope
+This policy defines minimum security controls for cloud identities, data encryption, secrets and cryptographic key management. It applies to production and non-production cloud environments, platform services, applications, automation identities and administrators.
+
+2. Encryption in transit
+Data transmitted over public or untrusted networks must use TLS 1.2 or later. TLS 1.3 should be preferred where supported. Plaintext administrative protocols must not be exposed to untrusted networks. Service-to-service communication carrying sensitive information must use authenticated encrypted channels.
+Certificates must be issued by approved certificate authorities, renewed before expiry and monitored. Private keys must not be stored in source repositories, container images, build logs or application configuration files.
+
+3. Encryption at rest
+Production data stores, managed disks, object storage, database backups and supported message services must use platform encryption at rest. Customer-managed keys must be used when required by data classification, contractual obligations or the approved architecture. Encryption settings must be verified during provisioning and periodically reviewed.
+Key rotation must follow the key owner’s schedule and applicable service capabilities. Rotation must be tested to avoid application outages. Key deletion must use appropriate recovery protections and approval workflows.
+
+4. Identity and access management
+All human access must use individually attributable identities and multi-factor authentication. Shared administrator accounts are prohibited except for controlled break-glass accounts. Privileged access must be time-bound and approved through the organization’s privileged access process.
+Role assignments must follow least privilege and be reviewed at least quarterly for production environments. Workloads should use managed identities or workload identity federation instead of stored client secrets. Service principals must have narrowly scoped permissions, an owner and a documented rotation or expiry plan.
+
+5. Azure Key Vault and secrets
+Azure Key Vault is the approved default service for storing application secrets, certificates and cryptographic keys in Azure. Access must be granted through Azure RBAC or an approved access model, scoped as narrowly as practical. Public network access should be disabled where private connectivity is available and required by the workload’s risk profile.
+Applications must retrieve secrets at runtime through an approved identity. Secrets must never be committed to Git, written to logs or passed as command-line arguments where they may be exposed. Secret rotation must be automated where supported. Access and administrative operations must be logged and monitored.
+Soft delete and purge protection must be enabled for production vaults where supported and required by the platform baseline. Recovery procedures must be documented.
+
+6. Logging and monitoring
+Authentication events, privileged role changes, Key Vault access, key operations and security-relevant configuration changes must be logged to approved central monitoring. Alerts must be configured for suspicious access patterns, disabled security controls and unexpected privilege escalation. Logs must be protected from unauthorized modification and retained according to the logging standard.
+
+7. Data classification and handling
+Data owners must classify information before it is placed in cloud services. Sensitive data must be minimized, access-controlled and encrypted. Production data must not be copied into development or demonstration environments unless approved and appropriately masked. Data residency and cross-border transfer requirements must be reviewed before selecting a cloud region.
+
+8. Responsibilities and exceptions
+Security owns the control baseline and risk review. Platform engineering implements shared controls. Application owners protect application data and identities. Exceptions require documented business justification, compensating controls, risk-owner approval and an expiry date.
+
+9. Quick reference
+Use TLS 1.2+, encryption at rest, MFA, least privilege, managed identities and Azure Key Vault. Never commit secrets or expose them in logs. Review production access quarterly.

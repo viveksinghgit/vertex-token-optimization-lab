@@ -1,0 +1,38 @@
+ENTERPRISE CLOUD BACKUP POLICY
+Document ID: OPS-BKP-001
+Version: 1.0
+Owner: Cloud Platform Operations
+Effective date: 1 January 2026
+Classification: Internal
+
+1. Purpose and scope
+This policy defines minimum backup, retention, validation and recovery requirements for production cloud workloads. It applies to managed databases, virtual machines, persistent volumes, object storage and configuration data operated by the company in Microsoft Azure or other approved cloud environments. Application owners remain accountable for identifying data dependencies and assigning business criticality.
+
+2. Backup frequency
+Tier 1 (business-critical) databases must use transaction-log or point-in-time protection at intervals supported by the platform, with a target recovery point no greater than 15 minutes. Full or incremental backups must run at least daily. Tier 1 virtual machines and persistent volumes must be protected daily, with additional snapshots before material platform changes.
+Tier 2 (important) databases and workloads must be backed up at least daily. Their target recovery point is 24 hours unless a service-specific design states otherwise.
+Tier 3 (non-critical) systems must be backed up at least weekly where the data cannot be recreated from source control or another authoritative system.
+Backup jobs must be monitored. A failed job must create an alert for the service owner and platform operations. Repeated failures must be escalated through the incident process.
+
+3. Retention requirements
+Tier 1 daily recovery points must be retained for at least 35 days. A weekly recovery point must be retained for 12 weeks, and a monthly recovery point for 12 months where supported and required by the data owner.
+Tier 2 daily recovery points must be retained for at least 14 days, with weekly copies retained for 8 weeks.
+Tier 3 backups must be retained for at least 7 days unless a documented business requirement specifies otherwise.
+Legal, regulatory or contractual retention requirements take precedence when they require a longer period. Data owners must approve exceptions. Expired backups must be deleted through managed lifecycle policies rather than informal manual cleanup.
+
+4. Recovery and restoration
+Recovery requests must identify the affected service, desired recovery point, target environment and business approver. Restoration must be performed into an isolated or controlled environment when integrity or malware is in question. The service owner must validate application consistency, access controls and data integrity before traffic is returned to service.
+For database recovery, application-consistent recovery methods must be preferred over crash-consistent snapshots where available. Encryption and network controls must remain enabled during restoration. Recovery credentials must not be embedded in scripts or tickets.
+
+5. Testing and evidence
+Tier 1 restore tests must be completed at least quarterly. Tier 2 restore tests must be completed at least twice per year. Tier 3 restore tests must be completed annually. Tests must record the selected recovery point, start and completion times, validation outcome, issues and corrective actions.
+A successful backup job alone is not proof of recoverability. Service owners must retain evidence of restore tests and review backup coverage after significant architecture changes.
+
+6. Responsibilities and exceptions
+Platform operations maintains backup services, monitoring and platform-level configuration. Application owners classify workloads, confirm data coverage and test restored applications. Security defines encryption and access requirements. Exceptions require documented risk acceptance from the service owner and approval from the Cloud Platform lead, with an expiry date and remediation plan.
+
+7. Quick reference
+Tier 1: daily backup plus supported point-in-time protection; 35-day daily retention; 15-minute target RPO.
+Tier 2: daily backup; 14-day retention; 24-hour target RPO.
+Tier 3: weekly backup; 7-day retention unless data is reproducible.
+All tiers: monitor failures, test restores and document exceptions.

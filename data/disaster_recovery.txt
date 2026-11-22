@@ -1,0 +1,43 @@
+DISASTER RECOVERY AND BUSINESS CONTINUITY POLICY
+Document ID: OPS-DR-004
+Version: 1.0
+Owner: Resilience and Cloud Operations
+Effective date: 1 January 2026
+Classification: Internal
+
+1. Purpose and scope
+This policy defines disaster recovery objectives and minimum regional recovery practices for company-operated cloud services. It covers regional outages, major platform failures, data corruption, destructive changes and security incidents that make a production service unavailable or unsafe.
+
+2. Recovery objectives
+Each service must have business-approved Recovery Time Objective (RTO) and Recovery Point Objective (RPO) values.
+Tier 1 critical services: target RTO of 4 hours and target RPO of 15 minutes.
+Tier 2 important services: target RTO of 24 hours and target RPO of 4 hours.
+Tier 3 standard services: target RTO of 72 hours and target RPO of 24 hours.
+These are baseline targets. A service’s approved business impact analysis and architecture may establish stricter objectives. RTO measures the maximum acceptable time to restore service. RPO measures the maximum acceptable data loss expressed as time.
+
+3. Regional recovery strategy
+Service owners must select a recovery pattern based on business criticality, data consistency, service dependencies and cost. Options include backup and restore, pilot light, warm standby and active-active deployment.
+Tier 1 services should use a tested secondary-region design where supported and justified. Tier 2 services must maintain recoverable backups and documented redeployment procedures; a warm standby may be selected based on business requirements. Tier 3 services may use backup and restore.
+The primary and recovery regions must be selected with regard to service availability, data residency, regulatory obligations and regional service support. A secondary region does not automatically guarantee application recovery: identity, DNS, networking, secrets, quotas and external dependencies must also be addressed.
+
+4. Data replication and consistency
+Replication configuration must align with the approved RPO. Asynchronous replication may introduce data loss during failover. Application owners must understand consistency guarantees and define how transactions in flight are handled.
+Backups must be protected from accidental deletion and, where appropriate, destructive actions in the primary region. Replication is not a substitute for backups because corruption or malicious deletion can be replicated.
+
+5. Failover and failback
+The recovery runbook must identify decision authority, incident roles, communication channels, dependency order, DNS or traffic-routing changes, data validation and customer communications.
+Failover must be authorized by the incident commander or designated service owner. Before directing users to the recovery environment, teams must validate application health, data consistency, security controls and monitoring.
+Failback to the primary region must be planned and approved. Data synchronization, duplicate processing and split-brain risks must be controlled. Teams must not fail back solely because the primary region appears available.
+
+6. Testing and exercises
+Tier 1 recovery exercises must occur at least annually, with component-level recovery tests at least quarterly where feasible. Tier 2 services must complete a recovery exercise at least annually. Tier 3 services must validate their documented restore procedure annually.
+Exercises must record actual RTO and RPO achieved, deviations, dependencies that failed, decisions made and remediation owners. Test environments must not disrupt production or expose sensitive data.
+
+7. Roles and governance
+The business service owner approves recovery objectives and accepts residual risk. Application teams maintain application runbooks and validate service behavior. Cloud platform operations maintains shared networking, identity, monitoring and recovery capabilities. Security advises on recovery from security incidents and validates access controls.
+
+8. Quick reference
+Tier 1: RTO 4 hours; RPO 15 minutes.
+Tier 2: RTO 24 hours; RPO 4 hours.
+Tier 3: RTO 72 hours; RPO 24 hours.
+Every service: approved objectives, dependency-aware runbook, tested recovery and documented failover authority.

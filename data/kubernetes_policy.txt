@@ -1,0 +1,37 @@
+KUBERNETES AND AKS WORKLOAD STANDARDS
+Document ID: PLAT-K8S-002
+Version: 1.0
+Owner: Cloud Platform Engineering
+Effective date: 1 January 2026
+Classification: Internal
+
+1. Purpose and scope
+This policy establishes baseline standards for workloads deployed to company-managed Azure Kubernetes Service (AKS) clusters. It applies to application teams, platform engineers, CI/CD pipelines and third-party workloads. Cluster-specific controls may be stricter, but must not weaken these minimum requirements without an approved exception.
+
+2. Workload requests and limits
+Every production container must define CPU and memory requests. Memory limits are mandatory. CPU limits should be set according to workload characteristics and platform guidance; teams must avoid unnecessarily restrictive CPU limits that cause throttling.
+As a starting point, small stateless services may request 100–250 millicores and 256–512 MiB memory, while larger services must be sized using load-test and production telemetry. These values are examples, not universal defaults. Resource values must be reviewed against observed utilization.
+Namespaces must have ResourceQuota and LimitRange policies. Production namespaces must define maximum aggregate CPU and memory consumption and reasonable per-container defaults. Teams must investigate OOMKilled events, sustained CPU throttling and repeated scheduling failures.
+
+3. Availability and scaling
+Production services with availability requirements must run at least two replicas across available nodes or zones where supported. Deployments must define readiness and liveness probes; startup probes should be used for applications with slow initialization. PodDisruptionBudgets must protect critical services during voluntary disruptions.
+Horizontal Pod Autoscaler should be configured for workloads with variable demand when supported by meaningful metrics. Cluster autoscaling must be enabled or an approved capacity plan must be documented. Applications must handle termination signals and use graceful shutdown periods.
+
+4. Security standards
+Containers must run as non-root unless a documented technical exception is approved. Privileged containers and hostPath mounts are prohibited by default. Images must come from approved registries, be scanned for vulnerabilities and be pinned by immutable digest for production releases where the delivery platform supports it.
+Secrets must be sourced from an approved secret-management solution such as Azure Key Vault through the Secrets Store CSI Driver or an approved external-secrets integration. Kubernetes Secret objects must not be treated as a substitute for encryption and access governance.
+Network Policies must restrict unnecessary east-west traffic. Workload identities should be used instead of long-lived service-principal credentials. RBAC permissions must follow least privilege.
+
+5. Deployment and operations
+Applications must be deployed through approved CI/CD or GitOps workflows. Production changes must be traceable to a reviewed source-control revision. Helm charts and manifests must be version-controlled. Manual production changes must be avoided and reconciled back to source control.
+Resource and application telemetry must be available through approved monitoring. Teams must define service-level indicators, alerts and operational ownership. Logs must not expose credentials, tokens or sensitive personal data.
+
+6. Node pools and cluster design
+System and user workloads should be separated using dedicated node pools, taints and tolerations where appropriate. Critical workloads should use availability zones where the region and SKU support them. Node images and Kubernetes versions must follow the platform upgrade schedule. Deprecated APIs must be removed before cluster upgrades.
+
+7. Responsibilities and exceptions
+Application teams own container configuration, capacity requests, probes and service health. Platform engineering owns cluster configuration, policy enforcement, node pools and shared observability. Security reviews exceptions involving privileged access, host networking or sensitive workloads. Exceptions require a risk statement, compensating controls, owner and expiry date.
+
+8. Quick reference
+Mandatory: CPU and memory requests, memory limits, health probes, approved images, least-privilege RBAC and monitored workloads.
+Default prohibited: privileged containers, unapproved registries, embedded credentials and unmanaged production changes.
