@@ -1,0 +1,150 @@
+{
+  "9afddd5bbb860ffb75bd56da5b738d23e0384b0d87657fab4604b234289c0699": {
+    "answer": "Based on the supplied policy:\n\n**Backup Frequency:**\n* Tier 1 (business-critical) databases must use transaction-log or point-in-time protection at intervals supported by the platform, with a target recovery point (RPO) no greater than 15 minutes. Full or incremental backups must run at least daily. \n* Tier 1 virtual machines and persistent volumes must be protected daily, with additional snapshots before material platform changes (*backup_policy.txt*).\n\n**Retention Requirements:**\n* Tier 1 daily recovery points must be retained for at least 35 days. \n* A weekly recovery point must be retained for 12 weeks, and a monthly recovery point for 12 months where supported and required by the data owner (*backup_policy.txt*).",
+    "model_used": "gemini-3.5-flash-lite",
+    "input_tokens": 640,
+    "output_tokens": 165,
+    "cached_tokens": 0,
+    "thinking_tokens": 0,
+    "total_tokens": 805,
+    "latency": 1.119,
+    "finish_reason": "FinishReason.STOP",
+    "input_cost_usd": 9.6e-05,
+    "output_cost_usd": 0.00020625,
+    "total_cost_usd": 0.00030225,
+    "retrieved_chunks": [
+      {
+        "name": "backup_policy.txt",
+        "similarity": 0.795,
+        "text": "3. Retention requirements\nTier 1 daily recovery points must be retained for at least 35 days. A weekly recovery point must be retained for 12 weeks, and a monthly recovery point for 12 months where supported and required by the data owner.\nTier 2 daily recovery points must be retained for at least 14 days, with weekly copies retained for 8 weeks.\nTier 3 backups must be retained for at least 7 days unless a documented business requirement specifies otherwise.\nLegal, regulatory or contractual retention requirements take precedence when they require a longer period. Data owners must approve exceptions. Expired backups must be deleted through managed lifecycle policies rather than informal manual cleanup."
+      },
+      {
+        "name": "backup_policy.txt",
+        "similarity": 0.786,
+        "text": "2. Backup frequency\nTier 1 (business-critical) databases must use transaction-log or point-in-time protection at intervals supported by the platform, with a target recovery point no greater than 15 minutes. Full or incremental backups must run at least daily. Tier 1 virtual machines and persistent volumes must be protected daily, with additional snapshots before material platform changes.\nTier 2 (important) databases and workloads must be backed up at least daily. Their target recovery point is 24 hours unless a service-specific design states otherwise.\nTier 3 (non-critical) systems must be backed up at least weekly where the data cannot be recreated from source control or another authoritative system.\nBackup jobs must be monitored. A failed job must create an alert for the service owner and platform operations. Repeated failures must be escalated through the incident process."
+      },
+      {
+        "name": "backup_policy.txt",
+        "similarity": 0.785,
+        "text": "7. Quick reference\nTier 1: daily backup plus supported point-in-time protection; 35-day daily retention; 15-minute target RPO.\nTier 2: daily backup; 14-day retention; 24-hour target RPO.\nTier 3: weekly backup; 7-day retention unless data is reproducible.\nAll tiers: monitor failures, test restores and document exceptions."
+      },
+      {
+        "name": "backup_policy.txt",
+        "similarity": 0.76,
+        "text": "5. Testing and evidence\nTier 1 restore tests must be completed at least quarterly. Tier 2 restore tests must be completed at least twice per year. Tier 3 restore tests must be completed annually. Tests must record the selected recovery point, start and completion times, validation outcome, issues and corrective actions.\nA successful backup job alone is not proof of recoverability. Service owners must retain evidence of restore tests and review backup coverage after significant architecture changes."
+      }
+    ],
+    "cache_hit": false
+  },
+  "2af29f01ef45a6654035184f7af5d5348f89b1a11e596c507c48ba31b0b0be97": {
+    "answer": "For Tier 1 critical services, the target RTO is 4 hours and the target RPO is 15 minutes (*disaster_recovery.txt*).",
+    "model_used": "gemini-3.5-flash-lite",
+    "input_tokens": 548,
+    "output_tokens": 34,
+    "cached_tokens": 0,
+    "thinking_tokens": 0,
+    "total_tokens": 582,
+    "latency": 0.862,
+    "finish_reason": "FinishReason.STOP",
+    "input_cost_usd": 8.22e-05,
+    "output_cost_usd": 4.25e-05,
+    "total_cost_usd": 0.0001247,
+    "retrieved_chunks": [
+      {
+        "name": "disaster_recovery.txt",
+        "similarity": 0.796,
+        "text": "2. Recovery objectives\nEach service must have business-approved Recovery Time Objective (RTO) and Recovery Point Objective (RPO) values.\nTier 1 critical services: target RTO of 4 hours and target RPO of 15 minutes.\nTier 2 important services: target RTO of 24 hours and target RPO of 4 hours.\nTier 3 standard services: target RTO of 72 hours and target RPO of 24 hours.\nThese are baseline targets. A service’s approved business impact analysis and architecture may establish stricter objectives. RTO measures the maximum acceptable time to restore service. RPO measures the maximum acceptable data loss expressed as time."
+      },
+      {
+        "name": "disaster_recovery.txt",
+        "similarity": 0.775,
+        "text": "8. Quick reference\nTier 1: RTO 4 hours; RPO 15 minutes.\nTier 2: RTO 24 hours; RPO 4 hours.\nTier 3: RTO 72 hours; RPO 24 hours.\nEvery service: approved objectives, dependency-aware runbook, tested recovery and documented failover authority."
+      },
+      {
+        "name": "disaster_recovery.txt",
+        "similarity": 0.73,
+        "text": "6. Testing and exercises\nTier 1 recovery exercises must occur at least annually, with component-level recovery tests at least quarterly where feasible. Tier 2 services must complete a recovery exercise at least annually. Tier 3 services must validate their documented restore procedure annually.\nExercises must record actual RTO and RPO achieved, deviations, dependencies that failed, decisions made and remediation owners. Test environments must not disrupt production or expose sensitive data."
+      },
+      {
+        "name": "backup_policy.txt",
+        "similarity": 0.715,
+        "text": "7. Quick reference\nTier 1: daily backup plus supported point-in-time protection; 35-day daily retention; 15-minute target RPO.\nTier 2: daily backup; 14-day retention; 24-hour target RPO.\nTier 3: weekly backup; 7-day retention unless data is reproducible.\nAll tiers: monitor failures, test restores and document exceptions."
+      }
+    ],
+    "cache_hit": false
+  },
+  "f3706f197e1e986aa2894c0fddb0c38d4fd8a2e2b4e10a3fc5433276ea050e64": {
+    "answer": "Based on the provided policy, workloads deployed on AKS must follow these security requirements:\n\n* Containers must run as non-root unless a documented technical exception is approved (*kubernetes_policy.txt*).\n* Privileged containers and `hostPath` mounts are prohibited by default (*kubernetes_policy.txt*).\n* Images must come from approved registries, be scanned for vulnerabilities, and be pinned by immutable digest for production releases where the delivery platform supports it (*kubernetes_policy.txt*).\n* Secrets must be sourced from an approved secret-management solution (such as Azure Key Vault through the Secrets Store CSI Driver or an approved external-secrets integration); Kubernetes Secret objects must not be treated as a substitute for encryption and access governance (*kubernetes_policy.txt*).\n* Network Policies must restrict unnecessary east-west traffic (*kubernetes_policy.txt*).\n* Workload identities should be used instead of long-lived service-principal credentials (*kubernetes_policy.txt*).\n* RBAC permissions must follow least privilege (*kubernetes_policy.txt*).",
+    "model_used": "gemini-3.5-flash-lite",
+    "input_tokens": 459,
+    "output_tokens": 217,
+    "cached_tokens": 0,
+    "thinking_tokens": 0,
+    "total_tokens": 676,
+    "latency": 1.186,
+    "finish_reason": "FinishReason.STOP",
+    "input_cost_usd": 6.885e-05,
+    "output_cost_usd": 0.00027125,
+    "total_cost_usd": 0.0003401,
+    "retrieved_chunks": [
+      {
+        "name": "kubernetes_policy.txt",
+        "similarity": 0.794,
+        "text": "1. Purpose and scope\nThis policy establishes baseline standards for workloads deployed to company-managed Azure Kubernetes Service (AKS) clusters. It applies to application teams, platform engineers, CI/CD pipelines and third-party workloads. Cluster-specific controls may be stricter, but must not weaken these minimum requirements without an approved exception."
+      },
+      {
+        "name": "kubernetes_policy.txt",
+        "similarity": 0.781,
+        "text": "4. Security standards\nContainers must run as non-root unless a documented technical exception is approved. Privileged containers and hostPath mounts are prohibited by default. Images must come from approved registries, be scanned for vulnerabilities and be pinned by immutable digest for production releases where the delivery platform supports it.\nSecrets must be sourced from an approved secret-management solution such as Azure Key Vault through the Secrets Store CSI Driver or an approved external-secrets integration. Kubernetes Secret objects must not be treated as a substitute for encryption and access governance.\nNetwork Policies must restrict unnecessary east-west traffic. Workload identities should be used instead of long-lived service-principal credentials. RBAC permissions must follow least privilege."
+      },
+      {
+        "name": "kubernetes_policy.txt",
+        "similarity": 0.773,
+        "text": "8. Quick reference\nMandatory: CPU and memory requests, memory limits, health probes, approved images, least-privilege RBAC and monitored workloads.\nDefault prohibited: privileged containers, unapproved registries, embedded credentials and unmanaged production changes."
+      },
+      {
+        "name": "kubernetes_policy.txt",
+        "similarity": 0.72,
+        "text": "6. Node pools and cluster design\nSystem and user workloads should be separated using dedicated node pools, taints and tolerations where appropriate. Critical workloads should use availability zones where the region and SKU support them. Node images and Kubernetes versions must follow the platform upgrade schedule. Deprecated APIs must be removed before cluster upgrades."
+      }
+    ],
+    "cache_hit": false
+  },
+  "a0e0e765692adc0edee46bcf28b3813a539ce29740778da3aba5f31eea1c8d8f": {
+    "answer": "Based on the provided excerpts, there is insufficient evidence to provide an Azure Kubernetes Service (AKS)-specific architecture design or a detailed tradeoff analysis covering cost, resilience, and operational complexity. The policies do not mention AKS.\n\nHowever, according to **disaster_recovery.txt**, the general regional recovery strategies, objectives, and considerations are:\n\n* **Strategy Patterns (disaster_recovery.txt):** Service owners choose a pattern based on criticality, consistency, dependencies, and cost. Options are *backup and restore*, *pilot light*, *warm standby*, and *active-active deployment*.\n  * **Tier 1:** Should use a tested secondary-region design where supported and justified.\n  * **Tier 2:** Requires recoverable backups and documented redeployment procedures (warm standby is optional based on requirements).\n  * **Tier 3:** May use backup and restore.\n* **RTO and RPO Targets (disaster_recovery.txt):**\n  * **Tier 1:** Target RTO of 4 hours; target RPO of 15 minutes.\n  * **Tier 2:** Target RTO of 24 hours; target RPO of 4 hours.\n  * **Tier 3:** Target RTO of 72 hours; target RPO of 24 hours.\n* **Secondary Region Considerations (disaster_recovery.txt):** Regions must be chosen based on service availability, data residency, regulations, and regional service support. The design must also address identity, DNS, networking, secrets, quotas, and external dependencies.\n* **Data Replication (disaster_recovery.txt):** Replication must align with the approved RPO. Asynchronous replication carries a risk of data loss during failover. Replication is not a substitute for backups, which must be protected against accidental deletion or destructive actions.",
+    "model_used": "gemini-3.8-flash",
+    "input_tokens": 607,
+    "output_tokens": 382,
+    "cached_tokens": 0,
+    "thinking_tokens": 0,
+    "total_tokens": 989,
+    "latency": 21.549,
+    "finish_reason": "FinishReason.STOP",
+    "input_cost_usd": 0.00022763,
+    "output_cost_usd": 0.00071625,
+    "total_cost_usd": 0.00094388,
+    "retrieved_chunks": [
+      {
+        "name": "disaster_recovery.txt",
+        "similarity": 0.716,
+        "text": "3. Regional recovery strategy\nService owners must select a recovery pattern based on business criticality, data consistency, service dependencies and cost. Options include backup and restore, pilot light, warm standby and active-active deployment.\nTier 1 services should use a tested secondary-region design where supported and justified. Tier 2 services must maintain recoverable backups and documented redeployment procedures; a warm standby may be selected based on business requirements. Tier 3 services may use backup and restore.\nThe primary and recovery regions must be selected with regard to service availability, data residency, regulatory obligations and regional service support. A secondary region does not automatically guarantee application recovery: identity, DNS, networking, secrets, quotas and external dependencies must also be addressed."
+      },
+      {
+        "name": "disaster_recovery.txt",
+        "similarity": 0.701,
+        "text": "4. Data replication and consistency\nReplication configuration must align with the approved RPO. Asynchronous replication may introduce data loss during failover. Application owners must understand consistency guarantees and define how transactions in flight are handled.\nBackups must be protected from accidental deletion and, where appropriate, destructive actions in the primary region. Replication is not a substitute for backups because corruption or malicious deletion can be replicated."
+      },
+      {
+        "name": "disaster_recovery.txt",
+        "similarity": 0.688,
+        "text": "2. Recovery objectives\nEach service must have business-approved Recovery Time Objective (RTO) and Recovery Point Objective (RPO) values.\nTier 1 critical services: target RTO of 4 hours and target RPO of 15 minutes.\nTier 2 important services: target RTO of 24 hours and target RPO of 4 hours.\nTier 3 standard services: target RTO of 72 hours and target RPO of 24 hours.\nThese are baseline targets. A service’s approved business impact analysis and architecture may establish stricter objectives. RTO measures the maximum acceptable time to restore service. RPO measures the maximum acceptable data loss expressed as time."
+      },
+      {
+        "name": "disaster_recovery.txt",
+        "similarity": 0.686,
+        "text": "8. Quick reference\nTier 1: RTO 4 hours; RPO 15 minutes.\nTier 2: RTO 24 hours; RPO 4 hours.\nTier 3: RTO 72 hours; RPO 24 hours.\nEvery service: approved objectives, dependency-aware runbook, tested recovery and documented failover authority."
+      }
+    ],
+    "cache_hit": false
+  }
+}
